@@ -50,7 +50,7 @@ sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.gi
 # Configuration de ~/.zshrc
 
 # Remplacer la ligne 'plugins=(git)' par la liste des plugins désirés
-sudo sed -i 's/plugins=\(git\)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
+sudo sed -i 's/^\(plugins=\)\(.*\)$/\1(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
 
 # Définir le thème powerlevel10k
 sudo sed -i 's/ZSH_THEME="[^"]*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
