@@ -1,14 +1,9 @@
 #!/bin/bash
-# Ce script installe les outils et les thèmes suivants :
-# - git
-# - zsh          https://github.com/zsh-users/zsh
-# - power10k     https://github.com/romkatv/powerlevel10k
-# - ohmyzsh      https://ohmyz.sh
-# - exa          https://github.com/ogham/exa
-# - zsh-autosuggestions
-# - zsh-syntax-highlighting
 
-
+# Script pour installer des outils et configurer zsh
+# - Outils : git, exa
+# - Thème : powerlevel10k
+# - Plugins Oh My ZSH : zsh-autosuggestions, zsh-syntax-highlighting, fast-syntax-highlighting, zsh-autocomplete
 
 # Couleurs pour les messages
 cyan="\033[1;36m"
@@ -16,20 +11,20 @@ red="\033[1;31m"
 reset="\033[0m"
 
 # Fonction pour afficher un message de succès ou d'échec
-function check_result {
+function check_result() {
   if [ $? -eq 0 ]; then
-    echo -e "${cyan}$1 réussie !${reset}"
+    echo -e "${cyan}$1 réussi !${reset}"
   else
     echo -e "${red}$1 échouée !${reset}"
   fi
 }
 
-# Precison pour meilleur rendu du terminal
-  echo -e "${cyan}$1 Il faut installer les 4 polices d'ecriture MesloLGS NF et les utiliser dans notre terminal (Tabby) pour avoir les logos & cie${reset}"
+# Informations sur les polices de caractères MesloLGS NF
+echo -e "${cyan}Pour un meilleur rendu du terminal, installez et utilisez les polices d'écriture MesloLGS NF dans votre terminal (Tabby) afin d'afficher correctement les logos et autres éléments.${reset}"
 sleep 3
 
 # Liste des paquets à installer
-packages=("git" "zsh" "exa" "zsh-autosuggestions" "zsh-syntax-highlighting")
+packages=("git" "exa")
 
 # Installation des paquets
 for package in "${packages[@]}"; do
@@ -42,22 +37,28 @@ done
 
 # Installation de Oh My ZSH
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" "" --unattended
-#Installation du theme Power10k
+
+# Installation du thème powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-# Plugins Oh My ZSH
+# Clonage des plugins Oh My ZSH
 git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
 
-# Remplacer ligne plugins=(git) par plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete) et application du temp powerlevel10k
+# Configuration de ~/.zshrc
+
+# Remplacer la ligne 'plugins=(git)' par la liste des plugins désirés
 sed -i 's/plugins=\(git\)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
+
+# Définir le thème powerlevel10k
 sed -i 's/ZSH_THEME="[^"]*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
 
-cat << EOF > ~/.zshrc
+# Ajouter des alias personnalisés (facultatif)
+cat << EOF >> ~/.zshrc
 
-# Alias personnalisés 
+# Alias personnalisés pour des commandes courantes
 alias ls="exa -a --icons \$argv"
 alias ll="exa -la --icons \$argv"
 alias la="exa -lagh --icons \$argv"
@@ -71,4 +72,9 @@ EOF
 
 # Application des modifications de ~/.zshrc
 source ~/.zshrc
+
+# Définir zsh comme shell par défaut (facultatif)
+# Si vous souhaitez que zsh soit votre shell par défaut, décommentez la ligne suivante
 chsh -s $(which zsh)
+
+exit 0
