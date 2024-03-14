@@ -64,7 +64,7 @@ alias ll="exa -la --icons \$argv"
 alias la="exa -lagh --icons \$argv"
 alias lt="exa -a --tree --icons --level=2 \$argv"
 alias ltf="exa -a --tree --icons \$argv"
-alias lat="exa -lagh -tree --icons \$argv"
+alias lat="exa -lagh --tree --icons \$argv"
 alias update="sudo apt update && sudo apt upgrade -y"
 alias ipa="ip -c a"
 
