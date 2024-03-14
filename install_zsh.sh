@@ -27,6 +27,7 @@ function check_result {
 # Precison pour meilleur rendu du terminal
   echo -e "${cyan}$1 Il faut installer les 4 polices d'ecriture MesloLGS NF et les utiliser dans notre terminal (Tabby) pour avoir les logos & cie${reset}"
 sleep 1
+  echo -e "${cyan}$1 https://github.com/IlanCosman/tide#fonts${reset}"
   echo -e "\n\n\n\n"
 sleep 3
 
@@ -53,8 +54,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/p
 git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
 
-#remplacer ligne plugins=(git) par plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)
+#remplacer ligne plugins=(git) par plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete) et application du temp powerlevel10k
 sed -i 's/plugins=\(git\)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
+sed -i 's/ZSH_THEME="[^"]*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
 
 cat << EOF > ~/.zshrc
 
