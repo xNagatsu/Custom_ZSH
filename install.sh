@@ -27,7 +27,6 @@ function check_result {
 # Precison pour meilleur rendu du terminal
   echo -e "${cyan}$1 Il faut installer les 4 polices d'ecriture MesloLGS NF et les utiliser dans notre terminal (Tabby) pour avoir les logos & cie${reset}"
 sleep 1
-  echo -e "${cyan}$1 https://github.com/IlanCosman/tide#fonts${reset}"
   echo -e "\n\n\n\n"
 sleep 3
 
