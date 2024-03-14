@@ -44,34 +44,37 @@ sleep 5
 sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Clonage des plugins Oh My ZSH
-sudo rm -rf $ZSH_CUSTOM/plugins/zsh-autosuggestions
+sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 sleep 1
-sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 sleep 2
-sudo rm -rf $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 sleep 1
-sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 sleep 2
 sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 sleep 1
 sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 sleep 2
-sudo rm -rf $ZSH_CUSTOM/plugins/zsh-autocomplete
+sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}plugins/zsh-autocomplete
 sleep 1
-sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
+sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
 sleep 2
 
 # Configuration de ~/.zshrc
 echo -e "Configuration ZSH"
 # Remplacer la ligne 'plugins=(git)' par la liste des plugins désirés
+echo -e "Activation Plugins"
 sudo sed -i 's/^\(plugins=\)\(.*\)$/\1(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
 sleep 1
 # Définir le thème powerlevel10k
+echo -e "Changement du thème"
 sudo sed -i 's/ZSH_THEME="[^"]*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
 sleep 1
 # Ajouter des alias personnalisés (facultatif)
-sudo cat << EOF >> ~/.zshrc
+echo -e "Création des Alias"
 sleep 1
+sudo cat << EOF >> ~/.zshrc
 # Alias personnalisés pour des commandes courantes
 alias ls="exa -a --icons \$argv"
 alias ll="exa -la --icons \$argv"
@@ -81,13 +84,15 @@ alias ltf="exa -a --tree --icons \$argv"
 alias lat="exa -lagh --tree --icons \$argv"
 alias update="sudo apt update && sudo apt upgrade -y"
 alias ipa="ip -c a"
-
 EOF
+echo -e "Création des Alias terminée"
 
 sleep 1
 # Application des modifications de ~/.zshrc
-source ~/.zshrc
-
+echo -e "Changement de répertoire"
+cd ..
+echo -e "Application des modifications"
+zsh ~/.zshrc
 echo -e "Configuration terminer lancement du module de configuration" 
 
 sleep 5 
