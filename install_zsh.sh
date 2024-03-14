@@ -38,31 +38,40 @@ done
 # Installation de Oh My ZSH
 sudo rm -rf ~/.oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+sleep 5
 
 # Installation du thème powerlevel10k
 sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-# Clonage des plugins Oh My ZSH# Clonage des plugins Oh My ZSH
-sudo rm -rf $ZSH_CUSTOM/plugins/zsh-autosuggestions 
+# Clonage des plugins Oh My ZSH
+sudo rm -rf $ZSH_CUSTOM/plugins/zsh-autosuggestions
+sleep 1
 sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+sleep 2
 sudo rm -rf $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+sleep 1
 sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+sleep 2
 sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+sleep 1
 sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+sleep 2
 sudo rm -rf $ZSH_CUSTOM/plugins/zsh-autocomplete
+sleep 1
 sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
+sleep 2
 
 # Configuration de ~/.zshrc
-
+echo -e "Configuration ZSH"
 # Remplacer la ligne 'plugins=(git)' par la liste des plugins désirés
 sudo sed -i 's/^\(plugins=\)\(.*\)$/\1(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
-
+sleep 1
 # Définir le thème powerlevel10k
 sudo sed -i 's/ZSH_THEME="[^"]*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
-
+sleep 1
 # Ajouter des alias personnalisés (facultatif)
 sudo cat << EOF >> ~/.zshrc
-
+sleep 1
 # Alias personnalisés pour des commandes courantes
 alias ls="exa -a --icons \$argv"
 alias ll="exa -la --icons \$argv"
@@ -75,11 +84,16 @@ alias ipa="ip -c a"
 
 EOF
 
+sleep 1
 # Application des modifications de ~/.zshrc
 source ~/.zshrc
 
+echo -e "Configuration terminer lancement du module de configuration" 
+
+sleep 5 
 # Définir zsh comme shell par défaut (facultatif)
 # Si vous souhaitez que zsh soit votre shell par défaut, décommentez la ligne suivante
 chsh -s $(which zsh)
 
 exit 0
+
