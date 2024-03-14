@@ -41,7 +41,7 @@ for package in "${packages[@]}"; do
 done
 
 # Installation de Oh My ZSH
-sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" "" --unattended
 #Installation du theme Power10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
@@ -71,3 +71,4 @@ EOF
 
 # Application des modifications de ~/.zshrc
 source ~/.zshrc
+chsh -s $(which zsh)
