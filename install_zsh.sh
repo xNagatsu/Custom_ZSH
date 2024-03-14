@@ -24,7 +24,7 @@ echo -e "${cyan}Pour un meilleur rendu du terminal, installez et utilisez les po
 sleep 3
 
 # Liste des paquets à installer
-packages=("git" "zsh" "exa")
+packages=("git" "zsh" "curl" "exa")
 
 # Installation des paquets
 for package in "${packages[@]}"; do
