@@ -28,12 +28,17 @@ sleep 2
 echo -e "${cyan}Téléchargement de MesloLGS NF...${reset}"
 mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf >/dev/null 2>&1
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf >/dev/null 2>&1
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf >/dev/null 2>&1
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf >/dev/null 2>&1
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Meslo.zip >/dev/null 2>&1
 
-check_result "Téléchargement de la police MesloLGS NF"
+# Vérifier si le téléchargement a réussi
+if [ $? -ne 0 ]; then
+  echo -e "${red}Erreur lors du téléchargement de MesloLGS NF.${reset}"
+  exit 1
+fi
+
+# Décompression de l'archive
+unzip Meslo.zip >/dev/null 2>&1
+rm Meslo.zip
 
 # Mise à jour du cache des polices
 echo -e "${cyan}Mise à jour du cache des polices...${reset}"
