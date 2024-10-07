@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Script pour installer des outils et configurer zsh sur Arch Linux
-# - Outils : git, exa, fastfetch
+# Script pour installer des outils et configurer zsh
+# - Outils : git, exa
 # - Thème : powerlevel10k
 # - Plugins Oh My ZSH : zsh-autosuggestions, zsh-syntax-highlighting, fast-syntax-highlighting, zsh-autocomplete
-# - Installation et configuration de la police MesloLGS NF pour Konsole
 
 # Couleurs pour les messages
 cyan="\033[1;36m"
@@ -21,91 +20,16 @@ function check_result() {
 }
 
 # Informations sur les polices de caractères MesloLGS NF
-echo -e "${cyan}Installation et configuration de la police MesloLGS NF pour Konsole...${reset}"
-sleep 2
-
-# Téléchargement et installation de la police MesloLGS NF
-echo -e "${cyan}Téléchargement de MesloLGS NF...${reset}"
-mkdir -p ~/.local/share/fonts
-cd ~/.local/share/fonts
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Meslo.zip >/dev/null 2>&1
-
-# Vérifier si le téléchargement a réussi
-if [ $? -ne 0 ]; then
-  echo -e "${red}Erreur lors du téléchargement de MesloLGS NF.${reset}"
-  exit 1
-fi
-
-# Décompression de l'archive
-unzip Meslo.zip >/dev/null 2>&1
-rm Meslo.zip
-
-# Mise à jour du cache des polices
-echo -e "${cyan}Mise à jour du cache des polices...${reset}"
-fc-cache -fv >/dev/null
-check_result "Mise à jour du cache des polices"
-sleep 1
-
-# Modification de la configuration de Konsole pour utiliser MesloLGS NF
-echo -e "${cyan}Configuration de Konsole pour utiliser MesloLGS NF...${reset}"
-
-# Création du fichier de configuration si inexistant
-konsole_config_path="$HOME/.local/share/konsole"
-mkdir -p "$konsole_config_path"
-profile_file="$konsole_config_path/MyProfile.profile"
-
-if [ ! -f "$profile_file" ]; then
-  cat <<EOF > "$profile_file"
-[Appearance]
-ColorScheme=WhiteOnBlack
-
-[Font]
-Font=MesloLGS NF,12,-1,5,50,0,0,0,0,0
-EOF
-else
-  # Modifier la police si le fichier de configuration existe
-  sed -i '/^Font=/d' "$profile_file"
-  echo "Font=MesloLGS NF,12,-1,5,50,0,0,0,0,0" >> "$profile_file"
-fi
-
-check_result "Configuration de la police MesloLGS NF dans Konsole"
-
-# Demande à l'utilisateur de sélectionner le profil dans Konsole
-echo -e "${cyan}Veuillez sélectionner 'MyProfile' dans les paramètres de Konsole pour appliquer la nouvelle police.${reset}"
+echo -e "${cyan}Pour un meilleur rendu du terminal, installez et utilisez les polices d'écriture MesloLGS NF dans votre terminal (Tabby) afin d'afficher correctement les logos et autres éléments.${reset}"
 sleep 3
 
-# Modification de /etc/pacman.conf
-echo -e "${cyan}Modification de /etc/pacman.conf pour activer la couleur et les téléchargements parallèles...${reset}"
-
-# Décommenter les lignes désirées dans /etc/pacman.conf
-sudo sed -i 's/^#\(Color\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(\[core\]\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(Include = \/etc\/pacman.d\/mirrorlist\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(\[extra\]\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(Include = \/etc\/pacman.d\/mirrorlist\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(\[multilib\]\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(Include = \/etc\/pacman.d\/mirrorlist\)/\1/' /etc/pacman.conf
-
-# Ajouter ou modifier ParallelDownloads à 5
-sudo sed -i '/^#ParallelDownloads = 5/s/^#//' /etc/pacman.conf
-sudo sed -i '/^ParallelDownloads =/!s/^ParallelDownloads =/ParallelDownloads = 5/' /etc/pacman.conf
-
-check_result "Modification de pacman.conf"
-sleep 1
-
-# Mise à jour du système
-echo -e "${cyan}Mise à jour du système...${reset}"
-sudo pacman -Syu --noconfirm
-check_result "Mise à jour du système"
-sleep 1
-
 # Liste des paquets à installer
-packages=("git" "zsh" "curl" "exa" "fastfetch")
+packages=("git" "zsh" "curl" "exa")
 
 # Installation des paquets
 for package in "${packages[@]}"; do
   echo -e "${cyan}Installation de $package...${reset}"
-  sudo pacman -S --noconfirm "$package" >/dev/null
+  sudo apt-get -y install "$package" >/dev/null
   check_result "Installation de $package"
   echo -e "\n\n"
   sleep 1
@@ -132,7 +56,7 @@ sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlight
 sleep 1
 sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 sleep 2
-sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
+sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}plugins/zsh-autocomplete
 sleep 1
 sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
 sleep 2
@@ -151,8 +75,6 @@ sleep 1
 echo -e "Création des Alias"
 sleep 1
 sudo cat << EOF >> ~/.zshrc
-# Lancement de Fastfetch
-fastfetch
 # Alias personnalisés pour des commandes courantes
 alias ls="exa -a --icons"
 alias ll="exa -la --icons"
@@ -170,7 +92,7 @@ echo -e "Changement de répertoire"
 cd ..
 echo -e "Application des modifications"
 zsh ~/.zshrc
-echo -e "Configuration terminée, lancement du module de configuration" 
+echo -e "Configuration terminer lancement du module de configuration" 
 
 sleep 5 
 # Définir zsh comme shell par défaut (facultatif)
