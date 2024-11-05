@@ -31,7 +31,7 @@ cd ~/.local/share/fonts
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Meslo.zip >/dev/null 2>&1
 
 # Vérifier si le téléchargement a réussi
-if [ $? -ne 0 ]; then
+if [ $? -ne 0 ];then
   echo -e "${red}Erreur lors du téléchargement de MesloLGS NF.${reset}"
   exit 1
 fi
@@ -54,7 +54,7 @@ konsole_config_path="$HOME/.local/share/konsole"
 mkdir -p "$konsole_config_path"
 profile_file="$konsole_config_path/MyProfile.profile"
 
-if [ ! -f "$profile_file" ]; then
+if [ ! -f "$profile_file" ];then
   cat <<EOF > "$profile_file"
 [Appearance]
 ColorScheme=WhiteOnBlack
@@ -85,17 +85,17 @@ sudo sed -i '/^\#
 
 \[core\]
 
-/,/Include/ { s/^#//; }' /etc/pacman.conf
+/,/^#Include/ { s/^#//; }' /etc/pacman.conf
 sudo sed -i '/^\#
 
 \[extra\]
 
-/,/Include/ { s/^#//; }' /etc/pacman.conf
+/,/^#Include/ { s/^#//; }' /etc/pacman.conf
 sudo sed -i '/^\#
 
 \[multilib\]
 
-/,/Include/ { s/^#//; }' /etc/pacman.conf
+/,/^#Include/ { s/^#//; }' /etc/pacman.conf
 
 # Ajouter ou modifier ParallelDownloads à 5
 sudo sed -i '/^#ParallelDownloads/s/^#//' /etc/pacman.conf
@@ -119,7 +119,7 @@ check_result "Installation de yay"
 packages=("git" "zsh" "curl" "exa" "fastfetch")
 
 # Installation des paquets
-for package in "${packages[@]}"; do
+for package in "${packages[@]}";do
   echo -e "${cyan}Installation de $package...${reset}"
   sudo pacman -S --noconfirm "$package" >/dev/null
   check_result "Installation de $package"
@@ -136,14 +136,13 @@ sleep 5
 sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Clonage des plugins Oh My ZSH
-sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-sleep 2
-sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-sleep 2
-sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-sleep 2
-sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
-sleep 2
+plugins=("zsh-autosuggestions" "zsh-syntax-highlighting" "fast-syntax-highlighting" "zsh-autocomplete")
+
+for plugin in "${plugins[@]}";do
+  sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/$plugin
+  sudo git clone https://github.com/zsh-users/$plugin.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/$plugin
+  sleep 2
+done
 
 # Configuration de ~/.zshrc
 echo -e "Configuration ZSH"
