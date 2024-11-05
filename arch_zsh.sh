@@ -20,30 +20,10 @@ function check_result() {
   fi
 }
 
-# Informations sur les polices de caractères MesloLGS NF
-echo -e "${cyan}Installation et configuration de la police MesloLGS NF pour Konsole...${reset}"
-sleep 2
-
 # Téléchargement et installation de la police MesloLGS NF
 echo -e "${cyan}Téléchargement de MesloLGS NF...${reset}"
-mkdir -p ~/.local/share/fonts
-cd ~/.local/share/fonts
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Meslo.zip >/dev/null 2>&1
-
-# Vérifier si le téléchargement a réussi
-if [ $? -ne 0 ];then
-  echo -e "${red}Erreur lors du téléchargement de MesloLGS NF.${reset}"
-  exit 1
-fi
-
-# Décompression de l'archive
-unzip Meslo.zip >/dev/null 2>&1
-rm Meslo.zip
-
-# Mise à jour du cache des polices
-echo -e "${cyan}Mise à jour du cache des polices...${reset}"
-fc-cache -fv >/dev/null
-check_result "Mise à jour du cache des polices"
+yay -S ttf-meslo-nerd
+check_result "Installation de la police MesloLGS NF"
 sleep 1
 
 # Modification de la configuration de Konsole pour utiliser MesloLGS NF
