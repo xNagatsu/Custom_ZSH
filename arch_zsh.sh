@@ -130,7 +130,6 @@ sleep 1
 # Ajouter des alias personnalisés (facultatif)
 echo -e "Création des Alias"
 sleep 1
-sudo sed -i '1i # Lancement de Fastfetch\nfastfetch\n' ~/.zshrc
 sudo cat << EOF >> ~/.zshrc
 # Alias personnalisés pour des commandes courantes
 alias ls="exa -a --icons"
@@ -151,6 +150,11 @@ cd ..
 echo -e "Application des modifications"
 zsh ~/.zshrc
 echo -e "Configuration terminée, lancement du module de configuration" 
+# Mise en place de fastfetch
+sudo sed -i '1i # Lancement de Fastfetch\nfastfetch\n' ~/.zshrc
+
+# Mise en place de zsh au lieu de bash
+sudo sed -i '1i exec zsh' ~/.bashrc
 
 sleep 5 
 # Définir zsh comme shell par défaut (facultatif)
