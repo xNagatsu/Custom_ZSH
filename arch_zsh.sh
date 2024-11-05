@@ -85,7 +85,7 @@ sleep 1
 
 
 # Liste des paquets à installer
-packages=("git" "zsh" "curl" "exa" "fastfetch")
+packages=("git" "zsh" "curl" "exa" "fastfetch" "reflector")
 
 # Installation des paquets
 for package in "${packages[@]}"; do
@@ -95,6 +95,10 @@ for package in "${packages[@]}"; do
   echo -e "\n\n"
   sleep 1
 done
+
+# Modification du Mirrorlist
+sudo reflector --country 'France' --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+sleep 5
 
 # Installation de Oh My ZSH
 sudo rm -rf ~/.oh-my-zsh
