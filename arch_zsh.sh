@@ -13,7 +13,7 @@ reset="\033[0m"
 
 # Fonction pour afficher un message de succès ou d'échec
 function check_result() {
-  if [ $? -eq 0 ]; then
+  if [ $? -eq 0 ];then
     echo -e "${cyan}$1 réussi !${reset}"
   else
     echo -e "${red}$1 échoué !${reset}"
@@ -85,17 +85,17 @@ sudo sed -i '/^\#
 
 \[core\]
 
-/,/^#Include/ { s/^#//; }' /etc/pacman.conf
+$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
 sudo sed -i '/^\#
 
 \[extra\]
 
-/,/^#Include/ { s/^#//; }' /etc/pacman.conf
+$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
 sudo sed -i '/^\#
 
 \[multilib\]
 
-/,/^#Include/ { s/^#//; }' /etc/pacman.conf
+$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
 
 # Ajouter ou modifier ParallelDownloads à 5
 sudo sed -i '/^#ParallelDownloads/s/^#//' /etc/pacman.conf
@@ -119,7 +119,7 @@ check_result "Installation de yay"
 packages=("git" "zsh" "curl" "exa" "fastfetch")
 
 # Installation des paquets
-for package in "${packages[@]}";do
+for package in "${packages[@]}"; do
   echo -e "${cyan}Installation de $package...${reset}"
   sudo pacman -S --noconfirm "$package" >/dev/null
   check_result "Installation de $package"
@@ -136,13 +136,14 @@ sleep 5
 sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Clonage des plugins Oh My ZSH
-plugins=("zsh-autosuggestions" "zsh-syntax-highlighting" "fast-syntax-highlighting" "zsh-autocomplete")
-
-for plugin in "${plugins[@]}";do
-  sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/$plugin
-  sudo git clone https://github.com/zsh-users/$plugin.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/$plugin
-  sleep 2
-done
+sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+sleep 2
+sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+sleep 2
+sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+sleep 2
+sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
+sleep 2
 
 # Configuration de ~/.zshrc
 echo -e "Configuration ZSH"
