@@ -80,21 +80,39 @@ echo -e "${cyan}Modification de /etc/pacman.conf pour activer la couleur et les 
 # Décommenter les lignes désirées dans /etc/pacman.conf
 sudo sed -i 's/^#\(Color\)/\1/' /etc/pacman.conf
 
+# Décommenter les sections [core], [extra], et [multilib] ainsi que leurs lignes Include
+sudo sed -i '/^\#
+
+\[core\]
+
+$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
+sudo sed -i '/^\#
+
+\[extra\]
+
+$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
+sudo sed -i '/^\#
+
+\[multilib\]
+
+$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
+
+# Décommenter les sections [core], [extra], et [multilib] si elles sont encore commentées
 sudo sed -i 's/^#\(
 
 \[core\]
 
-\)/\1/; s/^#Include/Include/' /etc/pacman.conf
+\)/\1/' /etc/pacman.conf
 sudo sed -i 's/^#\(
 
 \[extra\]
 
-\)/\1/; s/^#Include/Include/' /etc/pacman.conf
+\)/\1/' /etc/pacman.conf
 sudo sed -i 's/^#\(
 
 \[multilib\]
 
-\)/\1/; s/^#Include/Include/' /etc/pacman.conf
+\)/\1/' /etc/pacman.conf
 
 # Ajouter ou modifier ParallelDownloads à 5
 sudo sed -i '/^#ParallelDownloads = 5/s/^#//' /etc/pacman.conf
