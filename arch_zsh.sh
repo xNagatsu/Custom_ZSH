@@ -109,6 +109,9 @@ sudo pacman -Syu --noconfirm
 check_result "Mise à jour du système"
 sleep 1
 
+# Installation de yay 
+sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ..
+
 # Liste des paquets à installer
 packages=("git" "zsh" "curl" "exa" "fastfetch")
 
