@@ -78,9 +78,39 @@ sleep 3
 echo -e "${cyan}Modification de /etc/pacman.conf pour activer la couleur et les téléchargements parallèles...${reset}"
 
 # Décommenter les lignes désirées dans /etc/pacman.conf
-sudo sed -i '/^ \[core\] /,/^Include/ s/^#//' /etc/pacman.conf 
-sudo sed -i '/^ \[extra\] /,/^Include/ s/^#//' /etc/pacman.conf 
-sudo sed -i '/^ \[multilib\] /,/^Include/ s/^#//' /etc/pacman.conf
+sudo sed -i 's/^#\(Color\)/\1/' /etc/pacman.conf
+sudo sed -i 's/^#\(
+
+\[core\]
+
+\)/\1/' /etc/pacman.conf
+sudo sed -i '/^
+
+\[core\]
+
+/,/^Include/ s/^#Include/Include/' /etc/pacman.conf
+sudo sed -i 's/^#\(
+
+\[extra\]
+
+\)/\1/' /etc/pacman.conf
+sudo sed -i '/^
+
+\[extra\]
+
+/,/^Include/ s/^#Include/Include/' /etc/pacman.conf
+sudo sed -i 's/^#\(
+
+\[multilib\]
+
+\)/\1/' /etc/pacman.conf
+sudo sed -i '/^
+
+\[multilib\]
+
+/,/^Include/ s/^#Include/Include/' /etc/pacman.conf
+
+
 
 # Ajouter ou modifier ParallelDownloads à 5
 sudo sed -i '/^#ParallelDownloads = 5/s/^#//' /etc/pacman.conf
