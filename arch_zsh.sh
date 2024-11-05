@@ -20,6 +20,11 @@ function check_result() {
   fi
 }
 
+# Installation de yay 
+echo -e "${cyan}Installation de yay...${reset}"
+sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ..
+check_result "Installation de yay"
+
 # Téléchargement et installation de la police MesloLGS NF
 echo -e "${cyan}Téléchargement de MesloLGS NF...${reset}"
 yay -S ttf-meslo-nerd
@@ -78,10 +83,6 @@ sudo pacman -Syu --noconfirm
 check_result "Mise à jour du système"
 sleep 1
 
-# Installation de yay 
-echo -e "${cyan}Installation de yay...${reset}"
-sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ..
-check_result "Installation de yay"
 
 # Liste des paquets à installer
 packages=("git" "zsh" "curl" "exa" "fastfetch")
