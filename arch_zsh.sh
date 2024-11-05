@@ -130,9 +130,8 @@ sleep 1
 # Ajouter des alias personnalisés (facultatif)
 echo -e "Création des Alias"
 sleep 1
+sudo sed -i '1i # Lancement de Fastfetch\nfastfetch\n' ~/.zshrc
 sudo cat << EOF >> ~/.zshrc
-# Lancement de Fastfetch
-fastfetch
 # Alias personnalisés pour des commandes courantes
 alias ls="exa -a --icons"
 alias ll="exa -la --icons"
@@ -142,6 +141,7 @@ alias ltf="exa -a --tree --icons"
 alias lat="exa -lagh --tree --icons"
 alias ipa="ip -c a"
 EOF
+
 echo -e "Création des Alias terminée"
 
 sleep 1
