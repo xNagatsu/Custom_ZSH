@@ -19,5 +19,5 @@ curl -sLO "https://raw.githubusercontent.com/xNagatsu/Custom_ZSH/main/install_zs
 ### Pour Arch
 
 ``` bash
-curl -sLO  "https://raw.githubusercontent.com/xNagatsu/Custom_ZSH/refs/heads/main/arch_zsh.sh" 
+curl -sLO  "https://raw.githubusercontent.com/xNagatsu/Custom_ZSH/refs/heads/main/arch_zsh.sh" && chmod +x install_zsh.sh && ./install_zsh.sh  
 ```
