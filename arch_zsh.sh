@@ -16,7 +16,7 @@ function check_result() {
   if [ $? -eq 0 ]; then
     echo -e "${cyan}$1 réussi !${reset}"
   else
-    echo -e "${red}$1 échouée !${reset}"
+    echo -e "${red}$1 échoué !${reset}"
   fi
 }
 
@@ -78,45 +78,28 @@ sleep 3
 echo -e "${cyan}Modification de /etc/pacman.conf pour activer la couleur et les téléchargements parallèles...${reset}"
 
 # Décommenter les lignes désirées dans /etc/pacman.conf
-sudo sed -i 's/^#\(Color\)/\1/' /etc/pacman.conf
+sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
 
 # Décommenter les sections [core], [extra], et [multilib] ainsi que leurs lignes Include
 sudo sed -i '/^\#
 
 \[core\]
 
-$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
+/,/^#Include/ { s/^#//; }' /etc/pacman.conf
 sudo sed -i '/^\#
 
 \[extra\]
 
-$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
+/,/^#Include/ { s/^#//; }' /etc/pacman.conf
 sudo sed -i '/^\#
 
 \[multilib\]
 
-$/ { s/^#//; n; s/^#Include/Include/ }' /etc/pacman.conf
-
-# Décommenter les sections [core], [extra], et [multilib] si elles sont encore commentées
-sudo sed -i 's/^#\(
-
-\[core\]
-
-\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(
-
-\[extra\]
-
-\)/\1/' /etc/pacman.conf
-sudo sed -i 's/^#\(
-
-\[multilib\]
-
-\)/\1/' /etc/pacman.conf
+/,/^#Include/ { s/^#//; }' /etc/pacman.conf
 
 # Ajouter ou modifier ParallelDownloads à 5
-sudo sed -i '/^#ParallelDownloads = 5/s/^#//' /etc/pacman.conf
-sudo sed -i '/^ParallelDownloads =/!s/^ParallelDownloads =/ParallelDownloads = 5/' /etc/pacman.conf
+sudo sed -i '/^#ParallelDownloads/s/^#//' /etc/pacman.conf
+sudo sed -i '/^ParallelDownloads/!s/^ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
 
 check_result "Modification de pacman.conf"
 sleep 1
@@ -153,27 +136,17 @@ sleep 5
 sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Clonage des plugins Oh My ZSH
-sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-sleep 1
-sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-sleep 2
-sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-sleep 1
-sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-sleep 2
-sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-sleep 1
-sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-sleep 2
-sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
-sleep 1
-sudo git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
-sleep 2
+plugins=("zsh-autosuggestions" "zsh-syntax-highlighting" "fast-syntax-highlighting" "zsh-autocomplete")
+
+for plugin in "${plugins[@]}"; do
+  sudo rm -rf ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/$plugin
+  sudo git clone https://github.com/zsh-users/$plugin.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/$plugin
+  sleep 2
+done
 
 # Configuration de ~/.zshrc
 echo -e "Configuration ZSH"
 # Remplacer la ligne 'plugins=(git)' par la liste des plugins désirés
-echo -e "Activation Plugins"
 sudo sed -i 's/^\(plugins=\)\(.*\)$/\1(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
 sleep 1
 # Définir le thème powerlevel10k
