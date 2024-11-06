@@ -139,6 +139,7 @@ alias lt="exa -a --tree --icons --level=2"
 alias ltf="exa -a --tree --icons"
 alias lat="exa -lagh --tree --icons"
 alias ipa="ip -c a"
+alias clear="clear && fastfetch"
 EOF
 
 echo -e "Création des Alias terminée"
