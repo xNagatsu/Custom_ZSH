@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script pour installer des outils et configurer zsh
-# - Outils : git, exa
+# - Outils : git, eza
 # - Thème : powerlevel10k
 # - Plugins Oh My ZSH : zsh-autosuggestions, zsh-syntax-highlighting, fast-syntax-highlighting, zsh-autocomplete
 
@@ -24,7 +24,7 @@ echo -e "${cyan}Pour un meilleur rendu du terminal, installez et utilisez les po
 sleep 3
 
 # Liste des paquets à installer
-packages=("git" "zsh" "curl" "exa")
+packages=("git" "zsh" "curl" "eza")
 
 # Installation des paquets
 for package in "${packages[@]}"; do
@@ -76,12 +76,12 @@ echo -e "Création des Alias"
 sleep 1
 sudo cat << EOF >> ~/.zshrc
 # Alias personnalisés pour des commandes courantes
-alias ls="exa -a --icons"
-alias ll="exa -la --icons"
-alias la="exa -lagh --icons"
-alias lt="exa -a --tree --icons --level=2"
-alias ltf="exa -a --tree --icons"
-alias lat="exa -lagh --tree --icons"
+alias ls="eza -a --icons"
+alias ll="eza -la --icons"
+alias la="eza -lagh --icons"
+alias lt="eza -a --tree --icons --level=2"
+alias ltf="eza -a --tree --icons"
+alias lat="eza -lagh --tree --icons"
 alias ipa="ip -c a"
 EOF
 echo -e "Création des Alias terminée"
