@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script pour installer des outils et configurer zsh sur Arch Linux
-# - Outils : git, exa, fastfetch
+# - Outils : git, eza, fastfetch
 # - Thème : powerlevel10k
 # - Plugins Oh My ZSH : zsh-autosuggestions, zsh-syntax-highlighting, fast-syntax-highlighting, zsh-autocomplete
 # - Installation et configuration de la police MesloLGS NF pour Konsole
@@ -85,7 +85,7 @@ sleep 1
 
 
 # Liste des paquets à installer
-packages=("git" "zsh" "curl" "exa" "fastfetch" "reflector")
+packages=("git" "zsh" "curl" "eza" "fastfetch" "reflector")
 
 # Installation des paquets
 for package in "${packages[@]}"; do
@@ -132,12 +132,12 @@ echo -e "Création des Alias"
 sleep 1
 sudo cat << EOF >> ~/.zshrc
 # Alias personnalisés pour des commandes courantes
-alias ls="exa -a --icons"
-alias ll="exa -la --icons"
-alias la="exa -lagh --icons"
-alias lt="exa -a --tree --icons --level=2"
-alias ltf="exa -a --tree --icons"
-alias lat="exa -lagh --tree --icons"
+alias ls="eza -a --icons"
+alias ll="eza -la --icons"
+alias la="eza -lagh --icons"
+alias lt="eza -a --tree --icons --level=2"
+alias ltf="eza -a --tree --icons"
+alias lat="eza -lagh --tree --icons"
 alias ipa="ip -c a"
 alias clear="clear && fastfetch"
 EOF
