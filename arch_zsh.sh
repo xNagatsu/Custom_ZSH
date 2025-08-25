@@ -20,9 +20,14 @@ function check_result() {
   fi
 }
 
+# Installation de git (nécessaire pour cloner yay)
+echo -e "${cyan}Installation de git...${reset}"
+sudo pacman -S --noconfirm git
+check_result "Installation de git"
+
 # Installation de yay 
 echo -e "${cyan}Installation de yay...${reset}"
-sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ..
+sudo pacman -S --needed base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ..
 check_result "Installation de yay"
 
 # Téléchargement et installation de la police MesloLGS NF
@@ -85,7 +90,7 @@ sleep 1
 
 
 # Liste des paquets à installer
-packages=("git" "zsh" "curl" "eza" "fastfetch" "reflector")
+packages=("zsh" "curl" "eza" "fastfetch" "reflector")
 
 # Installation des paquets
 for package in "${packages[@]}"; do
