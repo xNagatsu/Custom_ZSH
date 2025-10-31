@@ -76,13 +76,14 @@ echo -e "Création des Alias"
 sleep 1
 sudo cat << EOF >> ~/.zshrc
 # Alias personnalisés pour des commandes courantes
-alias ls="eza -a --icons"
-alias ll="eza -la --icons"
-alias la="eza -lagh --icons"
-alias lt="eza -a --tree --icons --level=2"
-alias ltf="eza -a --tree --icons"
-alias lat="eza -lagh --tree --icons"
-alias ipa="ip -c a"
+alias ls='eza -a --icons'
+alias ll='eza -la --icons'
+alias la='eza -lagh --icons'
+alias lt='eza -a --tree --icons --level=2'
+alias ltf='eza -a --tree --icons'
+alias lat='eza -lagh --tree --icons'
+alias ipa='ip -c a'
+alias clear='clear && fastfetch'
 EOF
 echo -e "Création des Alias terminée"
 
