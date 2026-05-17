@@ -1,10 +1,10 @@
-# Aliases exa
-alias ls="exa -a --icons"
-alias ll="exa -la --icons"
-alias la="exa -lagh --icons"
-alias lt="exa -a --tree --icons --level=2"
-alias ltf="exa -a --tree --icons"
-alias lat="exa -lagh --tree --icons"
+# Aliases eza
+alias ls="eza -a --icons"
+alias ll="eza -la --icons"
+alias la="eza -lagh --icons"
+alias lt="eza -a --tree --icons --level=2"
+alias ltf="eza -a --tree --icons"
+alias lat="eza -lagh --tree --icons"
 
 # Aliases système
 alias grep="grep --color=auto"
