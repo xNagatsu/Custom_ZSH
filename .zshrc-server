@@ -1,0 +1,70 @@
+# ~/.zshrc
+
+# 1. AFFICHAGE (avant le bloc instant prompt)
+if command -v fastfetch >/dev/null 2>&1; then
+    fastfetch
+fi
+
+# 2. POWERLEVEL10K INSTANT PROMPT
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# 3. GARDE-FOU
+[[ $- == *i* ]] || return
+
+# 4. ZINIT
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+# 5. PLUGINS
+zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# 6. HISTORIQUE
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=2000
+setopt histignorealldups   # pas de doublons
+setopt histignorespace     # commandes précédées d'un espace ignorées
+setopt sharehistory        # partage entre terminaux en temps réel
+setopt appendhistory       # ajoute au lieu d'écraser
+
+# 7. COMPORTEMENT
+setopt autocd              # cd sans taper cd
+setopt correct             # correction orthographique
+bindkey -e                 # raccourcis clavier Emacs (Ctrl+A, Ctrl+E...)
+
+# 8. COMPLÉTION
+autoload -Uz compinit && compinit
+
+# 9. ALIAS ET FONCTIONS EXTERNES
+[ -f ~/.aliases ] && source ~/.aliases
+
+# 10. PROMPT P10K
+# Console physique (/dev/tty*) → sans icônes, SSH/terminal graphique (/dev/pts/*) → avec icônes
+# Pour générer les configs :
+#   Console  : p10k configure && mv ~/.p10k.zsh ~/.p10k-console.zsh
+#   Graphique: p10k configure && mv ~/.p10k.zsh ~/.p10k-graphical.zsh
+if [[ $(tty) == /dev/tty* ]]; then
+    [[ -f ~/.p10k-console.zsh ]] && source ~/.p10k-console.zsh
+else
+    [[ -f ~/.p10k-graphical.zsh ]] && source ~/.p10k-graphical.zsh
+fi
