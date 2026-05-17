@@ -1,23 +1,116 @@
-# 💡 Script pour personnaliser son Terminal
+# Procédure : Installation de zsh + Zinit
 
-## ⚙️ Installation et présentation du script  
+Zinit est le meilleur choix, pour plusieurs raisons :
 
-Avant toute chose, mettez vous dans votre répertoire avant de vous lancer dans l'installation du script.  
-Faite simplement cd dans votre terminal.  
-Lancer le script en copiant une des deux commandes si vous avez curl passez par **curl** sinon passez par **wget**.  
+- Chargement **lazy** des plugins — zsh démarre plus vite
+- Mise à jour de tous les plugins en une commande (`zinit update`)
+- Pas besoin de gérer les `source` manuellement pour chaque plugin
+- Très actif et maintenu
 
-### Avec wget
-``` bash
-wget -q "https://raw.githubusercontent.com/xNagatsu/Custom_ZSH/main/install_zsh.sh" && chmod +x install_zsh.sh && ./install_zsh.sh  
+---
+
+## Fichiers de configuration
+
+Créer les fichiers de config en copiant le contenu depuis le projet :
+
+```bash
+nano ~/.zshrc
+# ou
+micro ~/.zshrc
 ```
-### Avec curl
 
-``` bash
-curl -sLO "https://raw.githubusercontent.com/xNagatsu/Custom_ZSH/main/install_zsh.sh" && chmod +x install_zsh.sh && ./install_zsh.sh  
+Choisir le bon contenu selon la machine :
+- **Serveur / WSL** → copier le contenu de `.zshrc`
+- **Poste client (Ghostty, terminal graphique)** → copier le contenu de `.zshrc-client`
+
+Faire de même pour les aliases :
+
+```bash
+nano ~/.aliases
+# ou
+micro ~/.aliases
 ```
 
-### Pour Arch
+Copier le contenu de `.aliases`.
 
-``` bash
-curl -sLO  "https://raw.githubusercontent.com/xNagatsu/Custom_ZSH/refs/heads/main/arch_zsh.sh" && chmod +x arch_zsh.sh && ./arch_zsh.sh 
+---
+
+## Étapes
+
+### 1. Installer les dépendances
+
+#### exa / eza (requis pour les alias `ls`, `ll`, `la`, `lt`…)
+
+`eza` est le fork maintenu de `exa` — préférer `eza` quand disponible.
+
+**Arch Linux**
+```bash
+sudo pacman -S eza
 ```
+
+**Debian / Ubuntu**
+```bash
+sudo apt install eza
+# Si indisponible sur ta version :
+sudo apt install exa
+```
+
+**AlmaLinux / RHEL**
+```bash
+# Activer EPEL si pas déjà fait
+sudo dnf install epel-release
+sudo dnf install eza
+# Si indisponible :
+sudo dnf install exa
+```
+
+> Après installation, aucune modification des aliases n'est nécessaire si tu as installé `eza` : remplacer `exa` par `eza` dans `~/.aliases`.
+
+---
+
+### 2. Installer zsh
+
+**Arch Linux**
+```bash
+sudo pacman -S zsh
+```
+
+**Debian / Ubuntu**
+```bash
+sudo apt install zsh
+```
+
+**AlmaLinux / RHEL**
+```bash
+sudo dnf install zsh
+```
+
+### 3. Définir zsh comme shell par défaut
+
+```bash
+chsh -s $(which zsh)
+```
+
+Déconnecte/reconnecte ta session SSH pour que ça prenne effet.
+
+### 4. Lancer zsh
+
+```bash
+zsh
+```
+
+Zinit s'installe automatiquement au premier lancement grâce au bloc d'auto-install dans le `.zshrc`.
+
+### 5. Recharger
+
+```bash
+source ~/.zshrc
+```
+
+Zinit téléchargera les plugins au premier chargement.
+
+---
+
+## Extension à root
+
+Répéter les étapes 3 à 5 en session root (`sudo -i`), en copiant les mêmes fichiers de config.
