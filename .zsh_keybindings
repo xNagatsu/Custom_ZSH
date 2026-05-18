@@ -1,0 +1,86 @@
+# 1. Déclaration globale du tableau associatif des touches
+typeset -g -A key
+key=(
+    BackSpace   "${terminfo[kbs]}"
+    Home        "${terminfo[khome]}"
+    End         "${terminfo[kend]}"
+    Insert      "${terminfo[kich1]}"
+    Delete      "${terminfo[kdch1]}"
+    Up          "${terminfo[kcuu1]}"
+    Down        "${terminfo[kcud1]}"
+    Left        "${terminfo[kcub1]}"
+    Right       "${terminfo[kcuf1]}"
+    PageUp      "${terminfo[kpp]}"
+    PageDown    "${terminfo[knp]}"
+    ShiftTab    "${terminfo[kcbt]}"
+    CtrlLeft    "${terminfo[kLFT5]}"
+    CtrlRight   "${terminfo[kRIT5]}"
+)
+
+# 2. Fonction utilitaire pour assigner les touches à plusieurs keymaps
+function bind2maps() {
+    local i sequence widget
+    local -a maps
+
+    # On isole les keymaps (tout ce qui est avant le séparateur "--")
+    while [[ "$1" != "--" ]]; do
+        maps+=( "$1" )
+        shift
+    done
+    shift # On retire le "--"
+
+    sequence="${key[$1]}"
+    widget="$2"
+
+    # Si le terminal ne supporte pas cette touche, on ignore silencieusement
+    [[ -z "$sequence" ]] && return 1
+
+    # On applique le raccourci sur chaque keymap demandé
+    for i in "${maps[@]}"; do
+        bindkey -M "$i" "$sequence" "$widget"
+    done
+}
+
+# 3. Définition des raccourcis selon les modes (emacs, vi insert, vi command)
+bind2maps emacs             -- BackSpace  backward-delete-char
+bind2maps       viins       -- BackSpace  vi-backward-delete-char
+bind2maps             vicmd -- BackSpace  vi-backward-char
+
+bind2maps emacs             -- Home       beginning-of-line
+bind2maps       viins vicmd -- Home       vi-beginning-of-line
+
+bind2maps emacs             -- End        end-of-line
+bind2maps       viins vicmd -- End        vi-end-of-line
+
+bind2maps emacs viins       -- Insert     overwrite-mode
+bind2maps             vicmd -- Insert     vi-insert
+
+bind2maps emacs             -- Delete     delete-char
+bind2maps       viins vicmd -- Delete     vi-delete-char
+
+bind2maps emacs viins vicmd -- Up         up-line-or-history
+bind2maps emacs viins vicmd -- Down       down-line-or-history
+
+bind2maps emacs             -- Left       backward-char
+bind2maps       viins vicmd -- Left       vi-backward-char
+
+bind2maps emacs             -- Right      forward-char
+bind2maps       viins vicmd -- Right      vi-forward-char
+
+bind2maps emacs viins vicmd -- PageUp     beginning-of-buffer-or-history
+bind2maps emacs viins vicmd -- PageDown   end-of-buffer-or-history
+bind2maps emacs viins vicmd -- ShiftTab   reverse-menu-complete
+bind2maps emacs viins vicmd -- CtrlLeft   backward-word
+bind2maps emacs viins vicmd -- CtrlRight  forward-word
+
+# 4. Mode "Application" pour terminfo (assure le bon fonctionnement de l'échappement clavier via ZLE)
+if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+    autoload -Uz add-zle-hook-widget
+    function zle_application_mode_start { echoti smkx }
+    function zle_application_mode_stop  { echoti rmkx }
+    add-zle-hook-widget -Uz zle-line-init   zle_application_mode_start
+    add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+fi
+
+# 5. Nettoyage pour ne pas polluer l'espace de noms global
+unfunction bind2maps
