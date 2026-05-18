@@ -36,6 +36,9 @@ zinit light-mode for \
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-completions
+#zinit snippet OMZP::archlinux
+#zinit snippet OMZP::debian
+#zinit snippet OMZP::dnf 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # 6. HISTORIQUE
