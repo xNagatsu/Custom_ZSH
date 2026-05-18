@@ -55,6 +55,9 @@ setopt autocd              # cd sans taper cd
 setopt correct             # correction orthographique
 bindkey -e                 # raccourcis clavier Emacs (Ctrl+A, Ctrl+E...)
 
+# 7.1 KEY BINDINGS
+[ -f ~/.zsh_keybindings ] && source ~/.zsh_keybindings
+
 # 8. COMPLÉTION
 autoload -Uz compinit && compinit
 
